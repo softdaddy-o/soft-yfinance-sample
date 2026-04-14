@@ -154,6 +154,13 @@ def quiet_call(func):
         return func()
 
 
+def quiet_try(func, fallback=None):
+    try:
+        return quiet_call(func)
+    except Exception:
+        return fallback
+
+
 def df_to_records(df, limit_rows=5, selected_columns=None, include_index=False, sort_desc=False):
     if df is None or not isinstance(df, pd.DataFrame) or df.empty:
         return []
@@ -238,7 +245,7 @@ class DataCollector:
         ticker = self.ticker(symbol)
         info = quiet_call(lambda: ticker.info) or {}
         fast_info = normalize(dict(quiet_call(lambda: ticker.fast_info))) if hasattr(ticker, 'fast_info') else {}
-        history = quiet_call(lambda: ticker.history(period=period, interval=interval, auto_adjust=False))
+        history = quiet_try(lambda: ticker.history(period=period, interval=interval, auto_adjust=False), pd.DataFrame())
         close_series = history['Close'].dropna().tail(20) if isinstance(history, pd.DataFrame) and not history.empty else pd.Series(dtype=float)
         price = safe_float(fast_info.get('lastPrice') or info.get('regularMarketPrice') or (close_series.iloc[-1] if not close_series.empty else None))
         previous_close = safe_float(fast_info.get('previousClose') or info.get('regularMarketPreviousClose') or (close_series.iloc[-2] if len(close_series) > 1 else None))
@@ -293,7 +300,7 @@ class DataCollector:
 
     def build_bulk_download(self):
         symbols = ['AAPL', 'MSFT', '005930.KS', '7203.T', 'ASML.AS', 'BTC-USD', 'EURUSD=X']
-        frame = quiet_call(lambda: self.yf.download(symbols, period='1mo', interval='1d', auto_adjust=False, group_by='column', progress=False))
+        frame = quiet_try(lambda: self.yf.download(symbols, period='1mo', interval='1d', auto_adjust=False, group_by='column', progress=False), pd.DataFrame())
         rows = []
         if not frame.empty:
             close_frame = frame['Close'].tail(10).copy() if isinstance(frame.columns, pd.MultiIndex) else frame.tail(10).copy()
@@ -450,7 +457,10 @@ class DataCollector:
         ticker = self.ticker(symbol)
         quote = self.quote_snapshot(symbol)
         info = quiet_call(lambda: ticker.info) or {}
-        history = quiet_call(lambda: ticker.history(period='6mo', interval='1d', auto_adjust=False))
+        history = quiet_try(lambda: ticker.history(period='6mo', interval='1d', auto_adjust=False), pd.DataFrame())
+        actions_df = quiet_try(lambda: ticker.actions, pd.DataFrame())
+        dividends_series = quiet_try(lambda: ticker.dividends, pd.Series(dtype=float))
+        splits_series = quiet_try(lambda: ticker.splits, pd.Series(dtype=float))
         detail = {
             'symbol': symbol,
             'title': config['title'],
@@ -467,37 +477,37 @@ class DataCollector:
                 'dividendYield': normalize(safe_float(info.get('dividendYield'))),
             },
             'historyRows': series_to_records(history['Close'].dropna().tail(12) if not history.empty else pd.Series(dtype=float), limit_rows=12),
-            'actions': row_subset(quiet_call(lambda: ticker.actions), limit_rows=6),
-            'dividends': series_to_records(quiet_call(lambda: ticker.dividends).tail(6), limit_rows=6),
-            'splits': series_to_records(quiet_call(lambda: ticker.splits).tail(6), limit_rows=6),
-            'calendar': normalize(quiet_call(lambda: ticker.calendar) or {}),
+            'actions': row_subset(actions_df, limit_rows=6),
+            'dividends': series_to_records(dividends_series.tail(6), limit_rows=6),
+            'splits': series_to_records(splits_series.tail(6), limit_rows=6),
+            'calendar': normalize(quiet_try(lambda: ticker.calendar, {}) or {}),
             'financials': {
-                'incomeStatement': statement_to_records(quiet_call(lambda: ticker.income_stmt), 'income'),
-                'quarterlyIncomeStatement': statement_to_records(quiet_call(lambda: ticker.quarterly_income_stmt), 'income'),
-                'balanceSheet': statement_to_records(quiet_call(lambda: ticker.balance_sheet), 'balance'),
-                'cashflow': statement_to_records(quiet_call(lambda: ticker.cashflow), 'cashflow'),
+                'incomeStatement': statement_to_records(quiet_try(lambda: ticker.income_stmt, pd.DataFrame()), 'income'),
+                'quarterlyIncomeStatement': statement_to_records(quiet_try(lambda: ticker.quarterly_income_stmt, pd.DataFrame()), 'income'),
+                'balanceSheet': statement_to_records(quiet_try(lambda: ticker.balance_sheet, pd.DataFrame()), 'balance'),
+                'cashflow': statement_to_records(quiet_try(lambda: ticker.cashflow, pd.DataFrame()), 'cashflow'),
             },
             'research': {
-                'earningsDates': row_subset(quiet_call(lambda: ticker.earnings_dates), limit_rows=6, sort_desc=True),
-                'recommendations': row_subset(quiet_call(lambda: ticker.recommendations), limit_rows=6, sort_desc=True),
-                'analystTargets': normalize(quiet_call(lambda: ticker.analyst_price_targets) or {}),
-                'upgradesDowngrades': row_subset(quiet_call(lambda: ticker.upgrades_downgrades), limit_rows=8, sort_desc=True),
+                'earningsDates': row_subset(quiet_try(lambda: ticker.earnings_dates, pd.DataFrame()), limit_rows=6, sort_desc=True),
+                'recommendations': row_subset(quiet_try(lambda: ticker.recommendations, pd.DataFrame()), limit_rows=6, sort_desc=True),
+                'analystTargets': normalize(quiet_try(lambda: ticker.analyst_price_targets, {}) or {}),
+                'upgradesDowngrades': row_subset(quiet_try(lambda: ticker.upgrades_downgrades, pd.DataFrame()), limit_rows=8, sort_desc=True),
             },
             'ownership': {
-                'majorHolders': row_subset(quiet_call(lambda: ticker.major_holders), limit_rows=4),
-                'institutionalHolders': row_subset(quiet_call(lambda: ticker.institutional_holders), limit_rows=6),
-                'mutualFundHolders': row_subset(quiet_call(lambda: ticker.mutualfund_holders), limit_rows=6),
-                'insiderTransactions': row_subset(quiet_call(lambda: ticker.insider_transactions), limit_rows=6, sort_desc=True),
-                'insiderPurchases': row_subset(quiet_call(lambda: ticker.insider_purchases), limit_rows=6),
-                'insiderRoster': row_subset(quiet_call(lambda: ticker.insider_roster_holders), limit_rows=6),
+                'majorHolders': row_subset(quiet_try(lambda: ticker.major_holders, pd.DataFrame()), limit_rows=4),
+                'institutionalHolders': row_subset(quiet_try(lambda: ticker.institutional_holders, pd.DataFrame()), limit_rows=6),
+                'mutualFundHolders': row_subset(quiet_try(lambda: ticker.mutualfund_holders, pd.DataFrame()), limit_rows=6),
+                'insiderTransactions': row_subset(quiet_try(lambda: ticker.insider_transactions, pd.DataFrame()), limit_rows=6, sort_desc=True),
+                'insiderPurchases': row_subset(quiet_try(lambda: ticker.insider_purchases, pd.DataFrame()), limit_rows=6),
+                'insiderRoster': row_subset(quiet_try(lambda: ticker.insider_roster_holders, pd.DataFrame()), limit_rows=6),
             },
             'filings': normalize([
                 {'date': filing.get('date'), 'type': filing.get('type'), 'title': filing.get('title'), 'edgarUrl': filing.get('edgarUrl')}
-                for filing in (quiet_call(lambda: ticker.sec_filings) or [])[:6]
+                for filing in (quiet_try(lambda: ticker.sec_filings, []) or [])[:6]
             ]),
             'news': normalize([
                 {'title': item.get('title'), 'publisher': item.get('publisher'), 'link': item.get('link'), 'providerPublishTime': item.get('providerPublishTime')}
-                for item in (quiet_call(lambda: ticker.news) or [])[:6]
+                for item in (quiet_try(lambda: ticker.news, []) or [])[:6]
             ]),
             'options': self.build_options_preview(ticker, symbol),
             'fundData': self.build_fund_data(ticker),
