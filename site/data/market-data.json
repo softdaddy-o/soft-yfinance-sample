@@ -1,0 +1,113 @@
+{
+  "generatedAt": "2026-04-14T10:58:23Z",
+  "mode": "live",
+  "source": "Yahoo Finance via yfinance",
+  "quotes": [
+    {
+      "symbol": "AAPL",
+      "name": "Apple Inc.",
+      "quoteType": "EQUITY",
+      "currency": "USD",
+      "exchange": "NasdaqGS",
+      "price": 259.2,
+      "previousClose": 260.48,
+      "change": -1.28,
+      "changePercent": -0.4914,
+      "dayHigh": 260.18,
+      "dayLow": 256.66,
+      "marketCap": 3809702576128,
+      "history": [
+        253.5,
+        258.9,
+        260.49,
+        260.48,
+        259.2
+      ]
+    },
+    {
+      "symbol": "MSFT",
+      "name": "Microsoft Corporation",
+      "quoteType": "EQUITY",
+      "currency": "USD",
+      "exchange": "NasdaqGS",
+      "price": 384.37,
+      "previousClose": 370.87,
+      "change": 13.5,
+      "changePercent": 3.6401,
+      "dayHigh": 384.54,
+      "dayLow": 371.02,
+      "marketCap": 2856782921728,
+      "history": [
+        372.29,
+        374.33,
+        373.07,
+        370.87,
+        384.37
+      ]
+    },
+    {
+      "symbol": "NVDA",
+      "name": "NVIDIA Corporation",
+      "quoteType": "EQUITY",
+      "currency": "USD",
+      "exchange": "NasdaqGS",
+      "price": 189.31,
+      "previousClose": 188.745,
+      "change": 0.565,
+      "changePercent": 0.2993,
+      "dayHigh": 189.65,
+      "dayLow": 185.74,
+      "marketCap": 4601179799552,
+      "history": [
+        178.1,
+        182.08,
+        183.91,
+        188.63,
+        189.31
+      ]
+    },
+    {
+      "symbol": "BTC-USD",
+      "name": "Bitcoin USD",
+      "quoteType": "CRYPTOCURRENCY",
+      "currency": "USD",
+      "exchange": "CCC",
+      "price": 74402.625,
+      "previousClose": 74442.23,
+      "change": -39.605,
+      "changePercent": -0.0532,
+      "dayHigh": 74930.43,
+      "dayLow": 74145.92,
+      "marketCap": 1489217257472,
+      "history": [
+        72979.0469,
+        73054.2734,
+        70753.4062,
+        74484.6406,
+        74402.625
+      ]
+    },
+    {
+      "symbol": "005930.KS",
+      "name": "SamsungElec",
+      "quoteType": "EQUITY",
+      "currency": "KRW",
+      "exchange": "KSE",
+      "price": 206500.0,
+      "previousClose": 201000.0,
+      "change": 5500.0,
+      "changePercent": 2.7363,
+      "dayHigh": 210000.0,
+      "dayLow": 205500.0,
+      "marketCap": 1362556094513152,
+      "history": [
+        210500.0,
+        204000.0,
+        206000.0,
+        201000.0,
+        206500.0
+      ]
+    }
+  ],
+  "failures": []
+}

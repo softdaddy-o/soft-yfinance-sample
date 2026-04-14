@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>soft-yfinance-sample</title>
+    <meta name="description" content="Static market snapshot generated with yfinance and rendered with plain HTML, CSS, and JavaScript.">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <main class="page-shell">
+        <section class="hero">
+            <p class="eyebrow">soft-yfinance-sample</p>
+            <h1>Static market dashboard from <code>yfinance</code></h1>
+            <p class="hero-copy">
+                The deployed page is fully static. Market data is fetched by Python during build time,
+                written into JSON, then rendered here with plain JavaScript.
+            </p>
+            <div class="hero-meta">
+                <div class="meta-card">
+                    <span class="meta-label">Mode</span>
+                    <strong id="mode-badge">Loading...</strong>
+                </div>
+                <div class="meta-card">
+                    <span class="meta-label">Generated</span>
+                    <strong id="generated-at">Loading...</strong>
+                </div>
+                <div class="meta-card">
+                    <span class="meta-label">Source</span>
+                    <strong id="data-source">Loading...</strong>
+                </div>
+            </div>
+        </section>
+
+        <section class="architecture-note">
+            <p>
+                GitHub Pages works here because the runtime does not call Yahoo Finance.
+                The API call happens earlier in <code>scripts/generate_data.py</code>.
+            </p>
+        </section>
+
+        <section>
+            <div class="section-heading">
+                <h2>Quotes</h2>
+                <p>Five sample instruments with a tiny five-day sparkline.</p>
+            </div>
+            <div id="quote-grid" class="quote-grid" aria-live="polite"></div>
+        </section>
+    </main>
+
+    <template id="quote-card-template">
+        <article class="quote-card">
+            <div class="card-top">
+                <div>
+                    <p class="symbol"></p>
+                    <h3 class="name"></h3>
+                </div>
+                <span class="quote-type"></span>
+            </div>
+
+            <div class="price-row">
+                <div>
+                    <p class="label">Last price</p>
+                    <p class="price"></p>
+                </div>
+                <div class="change-pill"></div>
+            </div>
+
+            <div class="sparkline-wrap">
+                <svg class="sparkline" viewBox="0 0 180 52" preserveAspectRatio="none" role="img" aria-label="Price trend"></svg>
+            </div>
+
+            <dl class="stats">
+                <div>
+                    <dt>Prev close</dt>
+                    <dd class="previous-close"></dd>
+                </div>
+                <div>
+                    <dt>Day range</dt>
+                    <dd class="day-range"></dd>
+                </div>
+                <div>
+                    <dt>Market cap</dt>
+                    <dd class="market-cap"></dd>
+                </div>
+                <div>
+                    <dt>Venue</dt>
+                    <dd class="exchange"></dd>
+                </div>
+            </dl>
+        </article>
+    </template>
+
+    <script src="./app.js" defer></script>
+</body>
+</html>
