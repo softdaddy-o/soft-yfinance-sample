@@ -71,7 +71,7 @@ Open `http://localhost:8000`.
 ### 2. Live market data
 
 ```bash
-python -m venv .venv
+py -3.11 -m venv .venv
 .venv\Scripts\python -m pip install --upgrade pip setuptools wheel
 .venv\Scripts\python -m pip install -r requirements.txt
 .venv\Scripts\python scripts/generate_data.py
@@ -79,6 +79,7 @@ python -m venv .venv
 ```
 
 Using a virtual environment is recommended because `yfinance`, `pandas`, and `numpy` can conflict with an older global Anaconda setup.
+For current `yfinance` releases, Python `3.11` is the safest choice. The GitHub Pages workflow already builds with Python `3.11`.
 
 By default, the script fetches a built-in multi-market test set and generates:
 
