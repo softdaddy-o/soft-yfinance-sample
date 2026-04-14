@@ -3,4 +3,5 @@ wheel>=0.40
 numpy<2.0
 pandas>=2.2,<2.3
 lxml>=5.0
+pillow>=10.0
 yfinance>=0.2.66,<0.3

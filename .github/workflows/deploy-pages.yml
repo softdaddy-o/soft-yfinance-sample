@@ -38,6 +38,9 @@ jobs:
       - name: Generate market data
         run: python scripts/generate_data.py --output site/data/market-data.json
 
+      - name: Generate social preview image
+        run: python scripts/generate_social_preview.py
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
