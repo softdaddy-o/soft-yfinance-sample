@@ -4,92 +4,116 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>soft-yfinance-sample</title>
-    <meta name="description" content="Static market snapshot generated with yfinance and rendered with plain HTML, CSS, and JavaScript.">
+    <meta name="description" content="A static GitHub Pages showcase that tests a broad range of yfinance capabilities across global markets.">
     <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-    <main class="page-shell">
-        <section class="hero">
-            <p class="eyebrow">soft-yfinance-sample</p>
-            <h1>Static market dashboard from <code>yfinance</code></h1>
-            <p class="hero-copy">
-                The deployed page is fully static. Market data is fetched by Python during build time,
-                written into JSON, then rendered here with plain JavaScript.
-            </p>
-            <div class="hero-meta">
-                <div class="meta-card">
-                    <span class="meta-label">Mode</span>
-                    <strong id="mode-badge">Loading...</strong>
+    <header class="page-shell hero-shell">
+        <p class="eyebrow">soft-yfinance-sample</p>
+        <div class="hero-grid">
+            <section class="hero-copy">
+                <h1>Broad <code>yfinance</code> feature lab for global markets</h1>
+                <p>
+                    This page is static, but the dataset behind it is generated during build time by Python.
+                    It exercises ticker data, bulk downloads, search, lookup, screeners, sectors, industries,
+                    options, holders, filings, and more across U.S., Korea, Japan, Europe, India, FX, crypto, and commodities.
+                </p>
+                <nav class="section-nav" aria-label="Page sections">
+                    <a href="#coverage">Coverage</a>
+                    <a href="#universes">Universes</a>
+                    <a href="#discovery">Discovery</a>
+                    <a href="#deep-dives">Deep Dives</a>
+                </nav>
+            </section>
+            <section class="hero-panel">
+                <div class="stat-grid" id="summary-stats"></div>
+                <div class="meta-grid">
+                    <div class="meta-card">
+                        <span class="meta-label">Mode</span>
+                        <strong id="mode-badge">Loading...</strong>
+                    </div>
+                    <div class="meta-card">
+                        <span class="meta-label">Generated</span>
+                        <strong id="generated-at">Loading...</strong>
+                    </div>
+                    <div class="meta-card">
+                        <span class="meta-label">Library</span>
+                        <strong id="library-version">Loading...</strong>
+                    </div>
                 </div>
-                <div class="meta-card">
-                    <span class="meta-label">Generated</span>
-                    <strong id="generated-at">Loading...</strong>
-                </div>
-                <div class="meta-card">
-                    <span class="meta-label">Source</span>
-                    <strong id="data-source">Loading...</strong>
-                </div>
-            </div>
-        </section>
+            </section>
+        </div>
+    </header>
 
-        <section class="architecture-note">
-            <p>
-                GitHub Pages works here because the runtime does not call Yahoo Finance.
-                The API call happens earlier in <code>scripts/generate_data.py</code>.
-            </p>
-        </section>
+    <main class="page-shell page-content">
+        <section class="note-strip" id="notes"></section>
 
-        <section>
+        <section id="coverage" class="section-block">
             <div class="section-heading">
-                <h2>Quotes</h2>
-                <p>Five sample instruments with a tiny five-day sparkline.</p>
+                <h2>Feature Coverage</h2>
+                <p>Which `yfinance` features were actually exercised in this static build.</p>
             </div>
-            <div id="quote-grid" class="quote-grid" aria-live="polite"></div>
+            <div id="coverage-grid" class="coverage-grid" aria-live="polite"></div>
+        </section>
+
+        <section id="universes" class="section-block">
+            <div class="section-heading">
+                <h2>Cross-Market Universes</h2>
+                <p>Snapshot cards for multiple geographies and asset classes.</p>
+            </div>
+            <div id="universe-sections" class="stack-section"></div>
+        </section>
+
+        <section class="section-block">
+            <div class="section-heading">
+                <h2>Batch And Bulk Tests</h2>
+                <p><code>yf.Tickers</code> and <code>yf.download</code> rendered as static artifacts.</p>
+            </div>
+            <div class="dual-grid">
+                <article class="panel-card">
+                    <h3>Tickers Batch</h3>
+                    <div id="batch-quotes" class="quote-grid compact-grid"></div>
+                </article>
+                <article class="panel-card">
+                    <h3>Bulk Download Matrix</h3>
+                    <div id="bulk-download"></div>
+                </article>
+            </div>
+        </section>
+
+        <section id="discovery" class="section-block">
+            <div class="section-heading">
+                <h2>Discovery Features</h2>
+                <p>Search, lookup, screeners, market overviews, sectors, and industries.</p>
+            </div>
+            <div class="stack-section">
+                <article class="panel-card">
+                    <h3>Search And Lookup</h3>
+                    <div id="search-labs" class="triple-grid"></div>
+                </article>
+                <article class="panel-card">
+                    <h3>Predefined Screeners</h3>
+                    <div id="screeners" class="triple-grid"></div>
+                </article>
+                <article class="panel-card">
+                    <h3>Market Overview</h3>
+                    <div id="market-overviews" class="triple-grid"></div>
+                </article>
+                <article class="panel-card">
+                    <h3>Sector And Industry</h3>
+                    <div id="sector-industry" class="dual-grid"></div>
+                </article>
+            </div>
+        </section>
+
+        <section id="deep-dives" class="section-block">
+            <div class="section-heading">
+                <h2>Deep Dives</h2>
+                <p>Detailed samples for a U.S. equity, Korean equity, ETF, crypto asset, and FX pair.</p>
+            </div>
+            <div id="deep-dive-list" class="stack-section"></div>
         </section>
     </main>
-
-    <template id="quote-card-template">
-        <article class="quote-card">
-            <div class="card-top">
-                <div>
-                    <p class="symbol"></p>
-                    <h3 class="name"></h3>
-                </div>
-                <span class="quote-type"></span>
-            </div>
-
-            <div class="price-row">
-                <div>
-                    <p class="label">Last price</p>
-                    <p class="price"></p>
-                </div>
-                <div class="change-pill"></div>
-            </div>
-
-            <div class="sparkline-wrap">
-                <svg class="sparkline" viewBox="0 0 180 52" preserveAspectRatio="none" role="img" aria-label="Price trend"></svg>
-            </div>
-
-            <dl class="stats">
-                <div>
-                    <dt>Prev close</dt>
-                    <dd class="previous-close"></dd>
-                </div>
-                <div>
-                    <dt>Day range</dt>
-                    <dd class="day-range"></dd>
-                </div>
-                <div>
-                    <dt>Market cap</dt>
-                    <dd class="market-cap"></dd>
-                </div>
-                <div>
-                    <dt>Venue</dt>
-                    <dd class="exchange"></dd>
-                </div>
-            </dl>
-        </article>
-    </template>
 
     <script src="./app.js" defer></script>
 </body>

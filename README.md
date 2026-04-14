@@ -1,6 +1,6 @@
 # soft-yfinance-sample
 
-A small `yfinance` sample that is GitHub Pages friendly.
+A broad `yfinance` feature lab that stays GitHub Pages friendly.
 
 ## Verdict
 
@@ -14,6 +14,31 @@ What does work well is this flow:
 4. GitHub Actions regenerates the JSON on push or on a schedule, then deploys the static site to GitHub Pages.
 
 That gives you a real `yfinance` example while keeping the deployed site fully static.
+
+## What This Version Tests
+
+The page now covers a much wider set of `yfinance` features:
+
+- Cross-market quote snapshots for U.S., Korea, Japan, Europe, India, ETFs, crypto, FX, commodities, and indices
+- `yf.Tickers(...)` batch containers
+- `yf.download(...)` bulk history matrices
+- `Search` and `Lookup`
+- Predefined `screen(...)` queries
+- `Market(...)` regional overviews
+- `Sector(...)` and `Industry(...)`
+- `Ticker.calendar`
+- `Ticker.earnings_dates`
+- `Ticker.recommendations`
+- `Ticker.analyst_price_targets`
+- `Ticker.income_stmt`, `Ticker.balance_sheet`, `Ticker.cashflow`
+- `Ticker.major_holders`, `Ticker.institutional_holders`, `Ticker.mutualfund_holders`
+- `Ticker.insider_transactions`, `Ticker.insider_purchases`, `Ticker.insider_roster_holders`
+- `Ticker.upgrades_downgrades`
+- `Ticker.sec_filings`
+- `Ticker.news`
+- `Ticker.options` and `option_chain(...)`
+- `Ticker.funds_data` for ETF examples
+- Library-level `WebSocket` and `AsyncWebSocket` availability checks
 
 ## Project Layout
 
@@ -55,19 +80,15 @@ python -m venv .venv
 
 Using a virtual environment is recommended because `yfinance`, `pandas`, and `numpy` can conflict with an older global Anaconda setup.
 
-By default, the script fetches:
+By default, the script fetches a built-in multi-market test set and generates:
 
-- `AAPL`
-- `MSFT`
-- `NVDA`
-- `BTC-USD`
-- `005930.KS`
-
-You can override symbols:
-
-```bash
-.venv\Scripts\python scripts/generate_data.py --symbols AAPL MSFT TSM 005930.KS
-```
+- feature coverage status
+- cross-market universes
+- batch and bulk download tests
+- search and lookup samples
+- screener outputs
+- market, sector, and industry overviews
+- deep dives for `AAPL`, `005930.KS`, `SPY`, `BTC-USD`, and `EURUSD=X`
 
 ## Deploy To GitHub Pages
 
@@ -101,4 +122,4 @@ Use Vercel, a serverless function, or a small backend only if you want:
 - secret-backed upstream calls
 - caching or rate-limit control on the server
 
-For a portfolio-style demo page or a scheduled market snapshot, GitHub Pages is enough.
+For a scheduled feature showcase or market snapshot lab, GitHub Pages is enough.
