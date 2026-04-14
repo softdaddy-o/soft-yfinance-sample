@@ -19,10 +19,11 @@
                     options, holders, filings, and more across U.S., Korea, Japan, Europe, India, FX, crypto, and commodities.
                 </p>
                 <nav class="section-nav" aria-label="Page sections">
-                    <a href="#coverage">Coverage</a>
                     <a href="#universes">Universes</a>
-                    <a href="#discovery">Discovery</a>
+                    <a href="#batch-tests">Batch Tests</a>
                     <a href="#deep-dives">Deep Dives</a>
+                    <a href="#discovery">Discovery</a>
+                    <a href="#coverage">Coverage</a>
                 </nav>
             </section>
             <section class="hero-panel">
@@ -46,16 +47,6 @@
     </header>
 
     <main class="page-shell page-content">
-        <section class="note-strip" id="notes"></section>
-
-        <section id="coverage" class="section-block">
-            <div class="section-heading">
-                <h2>Feature Coverage</h2>
-                <p>Which `yfinance` features were actually exercised in this static build.</p>
-            </div>
-            <div id="coverage-grid" class="coverage-grid" aria-live="polite"></div>
-        </section>
-
         <section id="universes" class="section-block">
             <div class="section-heading">
                 <h2>Cross-Market Universes</h2>
@@ -64,7 +55,7 @@
             <div id="universe-sections" class="stack-section"></div>
         </section>
 
-        <section class="section-block">
+        <section id="batch-tests" class="section-block">
             <div class="section-heading">
                 <h2>Batch And Bulk Tests</h2>
                 <p><code>yf.Tickers</code> and <code>yf.download</code> rendered as static artifacts.</p>
@@ -80,6 +71,16 @@
                 </article>
             </div>
         </section>
+
+        <section id="deep-dives" class="section-block">
+            <div class="section-heading">
+                <h2>Deep Dives</h2>
+                <p>Detailed samples for a U.S. equity, Korean equity, ETF, crypto asset, and FX pair.</p>
+            </div>
+            <div id="deep-dive-list" class="stack-section"></div>
+        </section>
+
+        <section class="note-strip" id="notes"></section>
 
         <section id="discovery" class="section-block">
             <div class="section-heading">
@@ -106,12 +107,12 @@
             </div>
         </section>
 
-        <section id="deep-dives" class="section-block">
+        <section id="coverage" class="section-block">
             <div class="section-heading">
-                <h2>Deep Dives</h2>
-                <p>Detailed samples for a U.S. equity, Korean equity, ETF, crypto asset, and FX pair.</p>
+                <h2>Feature Coverage</h2>
+                <p>Which <code>yfinance</code> features were actually exercised in this static build.</p>
             </div>
-            <div id="deep-dive-list" class="stack-section"></div>
+            <div id="coverage-grid" class="coverage-grid" aria-live="polite"></div>
         </section>
     </main>
 
